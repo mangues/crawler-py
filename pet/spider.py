@@ -1,9 +1,11 @@
 # coding:utf-8
 # 爬虫调度器
 from pet import html_download,html_parser,url_manager,outputer;
+from threading import Thread
 
 class Spider(object):
     def __init__(self):
+
         self.urls = url_manager.UrlManager();
         self.downLoader = html_download.HtmlDownLoad();
         self.parser = html_parser.HtmlParser();
@@ -23,7 +25,22 @@ class Spider(object):
                print("解析错误:",e)
 
 
+class CrawThread(Thread):
+    def __init__(self,name):
+        super().__init__()
+        self.name=name
+    def run(self):
+        print('%s 线程启动' % self.name)
+        spider = Spider()
+        spider.craw("http://www.ichong123.com/")
+
 if __name__ == '__main__':
-    spider = Spider()
-    spider.craw("http://www.ichong123.com/")
+    crawThread1 = CrawThread('1号')
+    crawThread2 = CrawThread('2号')
+    crawThread3 = CrawThread('3号')
+    crawThread4 = CrawThread('4号')
+    crawThread1.start()
+    crawThread2.start()
+    crawThread3.start()
+    crawThread4.start()
 

@@ -2,17 +2,22 @@
 # url 管理器
 from pet.db.redisdb import RedisPool
 from pet.conf.setting import redis_host,redis_password,redis_port,redis_db
+import threading
+lock = threading.Lock()
 class UrlManager(object):
     def __init__(self):
         self.redisPool = RedisPool(redis_host,redis_port,redis_password,redis_db)
 
     #增加新的url
     def add_new_url(self, url):
+        # 获取锁
+        lock.acquire()
         if url is None:
             return
-        if self.redisPool.isExistNew(url)==False and self.redisPool.isExistOld(url)==False:
+        if self.redisPool.isExistOld(url)==False:
             self.redisPool.putNew(url)
-        pass
+        # 释放锁
+        lock.release()
 
     #判断是否有url
     def has_new_url(self):
@@ -20,8 +25,12 @@ class UrlManager(object):
 
     #获取最新的url并加入已使用
     def get_new_url(self):
+        # 获取锁
+        lock.acquire()
         url = self.redisPool.getNew()
         self.redisPool.putOld(url)
+        # 释放锁
+        lock.release()
         return url
 
     #批量加入url
