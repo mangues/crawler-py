@@ -31,6 +31,7 @@ class HtmlParser(object):
         title_node = soup.find("h1", class_="ac-title")
         res_data["title"] =title_node.get_text()
         content_node = soup.find("div", class_="ac-content").find("table")
-        res_data["content"] = content_node.get_text()
+        res_data["summary"] = content_node.get_text()
+        res_data["content"] = str(content_node)
         res_data["url"] = url
         return res_data;

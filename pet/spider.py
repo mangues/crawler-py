@@ -1,13 +1,13 @@
 # coding:utf-8
 # 爬虫调度器
-from pet import html_download,html_parser,url_manager,Outputer;
+from pet import html_download,html_parser,url_manager,outputer;
 
 class Spider(object):
     def __init__(self):
         self.urls = url_manager.UrlManager();
         self.downLoader = html_download.HtmlDownLoad();
         self.parser = html_parser.HtmlParser();
-        self.outputer = Outputer.Outputer();
+        self.outputer = outputer.Outputer();
 
     def craw(self,root_url):
         self.urls.add_new_url(root_url)
@@ -19,10 +19,8 @@ class Spider(object):
                 new_urls,new_data = self.parser.parse(new_url,html) #解析网页和所有待爬取url
                 self.urls.add_new_urls(new_urls)  #加入到url管理器
                 self.outputer.collect_data(new_data)  #输出器
-            except Exception:
-               print("解析错误:",Exception)
-
-        self.outputer.out_html()
+            except Exception as e:
+               print("解析错误:",e)
 
 
 if __name__ == '__main__':
