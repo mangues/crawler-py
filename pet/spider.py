@@ -9,9 +9,7 @@ class Spider(object):
         self.parser = html_parser.HtmlParser();
         self.outputer = Outputer.Outputer();
 
-
     def craw(self,root_url):
-        count = 1;
         self.urls.add_new_url(root_url)
         while self.urls.has_new_url():   #如果有url
             try:
@@ -21,7 +19,6 @@ class Spider(object):
                 new_urls,new_data = self.parser.parse(new_url,html) #解析网页和所有待爬取url
                 self.urls.add_new_urls(new_urls)  #加入到url管理器
                 self.outputer.collect_data(new_data)  #输出器
-
             except Exception:
                print("解析错误:",Exception)
 
