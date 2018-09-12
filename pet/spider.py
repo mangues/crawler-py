@@ -31,7 +31,7 @@ class CrawThread(Thread):
     def run(self):
         print('%s 线程启动' % self.name)
         spider = Spider()
-        # spider.urls.add_new_url("http://www.ichong123.com/")
+        spider.urls.add_new_url("http://www.ichong123.com/")
         spider.urls.add_new_url("http://www.yc.cn/news/")
         spider.craw()
 
